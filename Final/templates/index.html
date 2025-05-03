@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Poster Generator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <nav class="navigation">
+            <a href="/" class="nav-link active">Create Poster</a>
+            <a href="/gallery" class="nav-link">Gallery</a>
+            <a href="/favorites" class="nav-link">Favorites</a>
+        </nav>
+
+        <h1>Movie Poster Generator</h1>
+        
+        <div class="form-container">
+            <form id="posterForm">
+                <div class="form-group">
+                    <label for="title">Movie Title</label>
+                    <input type="text" id="title" name="title" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="director">Director</label>
+                    <input type="text" id="director" name="director" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="genre">Genre</label>
+                    <select id="genre" name="genre" required>
+                        <option value="">Select a genre</option>
+                        <option value="romance">Romance</option>
+                        <option value="scifi">Science Fiction</option>
+                        <option value="thriller">Thriller</option>
+                        <option value="fantasy">Fantasy</option>
+                    </select>
+                </div>
+                
+                <button type="submit">Generate Poster</button>
+            </form>
+        </div>
+
+        <div class="loading">
+            <div class="loading-spinner"></div>
+            <p>Generating your movie poster...</p>
+        </div>
+
+        <div class="result-container">
+            <div class="poster-container">
+                <div class="poster">
+                    <img id="posterImage" src="" alt="Generated Movie Poster">
+                </div>
+                <div class="movie-details">
+                    <h2 class="movie-title" id="movieTitle"></h2>
+                    <div class="movie-meta">
+                        <span id="movieDirector"></span>
+                        <span>•</span>
+                        <span id="movieGenre"></span>
+                    </div>
+                    <div class="movie-description">
+                        <h3>Plot Summary</h3>
+                        <p id="movieDescription"></p>
+                    </div>
+                    <div class="movie-description">
+                        <h3>Detailed Synopsis</h3>
+                        <p id="movieSynopsis"></p>
+                    </div>
+                    <div class="color-palette" id="colorPalette"></div>
+                    <button class="favorite-btn" id="favoriteBtn">
+                        <i class="fas fa-heart"></i>
+                        <span>Add to Favorites</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html> 

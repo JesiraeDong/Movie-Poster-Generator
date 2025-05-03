@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Favorite Posters</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <nav class="navigation">
+            <a href="/" class="nav-link">Create Poster</a>
+            <a href="/gallery" class="nav-link">Gallery</a>
+            <a href="/favorites" class="nav-link active">Favorites</a>
+        </nav>
+
+        <h1>My Favorite Posters</h1>
+        
+        {% if posters %}
+        <div class="gallery-grid">
+            {% for poster in posters %}
+            <div class="gallery-item" data-poster-id="{{ poster.id }}">
+                <div class="poster-card">
+                    <img src="{{ poster.image_path }}" alt="{{ poster.title }}">
+                    <div class="poster-info">
+                        <h3>{{ poster.title }}</h3>
+                        <p>Directed by {{ poster.director }}</p>
+                        <p class="genre">{{ poster.genre.upper() }}</p>
+                        <button class="favorite-btn active" onclick="toggleFavorite({{ poster.id }})">
+                            <i class="fas fa-heart"></i>
+                        </button>
+                    </div>
+                    <div class="color-palette">
+                        {% for color in poster.color_palette|from_json %}
+                        <div class="color-swatch" style="background-color: {{ color }}"></div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="empty-state">
+            <i class="fas fa-heart"></i>
+            <p>You haven't favorited any posters yet.</p>
+            <a href="/gallery" class="btn">Browse Gallery</a>
+        </div>
+        {% endif %}
+    </div>
+
+    <script>
+        async function toggleFavorite(posterId) {
+            try {
+                const response = await fetch('/toggle_favorite', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ poster_id: posterId })
+                });
+                
+                const data = await response.json();
+                if (data.success) {
+                    const item = document.querySelector(`[data-poster-id="${posterId}"]`);
+                    if (!data.is_favorite) {
+                        item.remove();
+                        // Check if there are no more favorites
+                        const remainingItems = document.querySelectorAll('.gallery-item');
+                        if (remainingItems.length === 0) {
+                            location.reload(); // Reload to show empty state
+                        }
+                    }
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+    </script>
+</body>
+</html> 

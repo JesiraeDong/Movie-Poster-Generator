@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Share {{ poster.title }} - Movie Poster</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        .share-container {
+            padding: 2rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .share-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .share-title {
+            font-size: 2rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+        
+        .share-subtitle {
+            color: #666;
+            font-size: 1.1rem;
+        }
+        
+        .share-content {
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .share-poster {
+            width: 100%;
+            max-width: 400px;
+            margin: 0 auto 2rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            overflow: hidden;
+        }
+        
+        .share-poster img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        
+        .share-details {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .share-poster-title {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+        
+        .share-poster-meta {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .share-poster-description {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+        
+        .share-options {
+            margin-top: 2rem;
+        }
+        
+        .share-options-title {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary-color);
+            text-align: center;
+        }
+        
+        .share-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .share-button {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+        
+        .share-button:hover {
+            transform: translateY(-5px);
+        }
+        
+        .share-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+        }
+        
+        .facebook {
+            background-color: #3b5998;
+        }
+        
+        .twitter {
+            background-color: #1da1f2;
+        }
+        
+        .pinterest {
+            background-color: #bd081c;
+        }
+        
+        .email {
+            background-color: #ea4335;
+        }
+        
+        .whatsapp {
+            background-color: #25d366;
+        }
+        
+        .share-button-label {
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        .share-link {
+            margin-top: 2rem;
+            text-align: center;
+        }
+        
+        .share-link-title {
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+            color: #666;
+        }
+        
+        .share-link-input {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .share-link-input input {
+            flex: 1;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            font-size: 0.9rem;
+        }
+        
+        .copy-button {
+            padding: 0.75rem 1rem;
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        
+        .copy-button:hover {
+            background-color: #2980b9;
+        }
+        
+        .copy-success {
+            color: #27ae60;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+            display: none;
+        }
+        
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 2rem;
+            color: var(--secondary-color);
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+        
+        .back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="share-container">
+        <div class="share-header">
+            <h1 class="share-title">Share This Movie Poster</h1>
+            <p class="share-subtitle">Share "{{ poster.title }}" with your friends and family</p>
+        </div>
+        
+        <div class="share-content">
+            <div class="share-poster">
+                <img src="{{ url_for('static', filename=poster.image_path) }}" alt="{{ poster.title }}">
+            </div>
+            
+            <div class="share-details">
+                <h2 class="share-poster-title">{{ poster.title }}</h2>
+                <div class="share-poster-meta">
+                    <span>Directed by {{ poster.director }}</span>
+                    <span>•</span>
+                    <span>{{ poster.genre|capitalize }}</span>
+                </div>
+                <p class="share-poster-description">{{ poster.description }}</p>
+            </div>
+            
+            <div class="share-options">
+                <h3 class="share-options-title">Share via</h3>
+                <div class="share-buttons">
+                    <div class="share-button" data-platform="facebook">
+                        <div class="share-icon facebook">f</div>
+                        <span class="share-button-label">Facebook</span>
+                    </div>
+                    <div class="share-button" data-platform="twitter">
+                        <div class="share-icon twitter">t</div>
+                        <span class="share-button-label">Twitter</span>
+                    </div>
+                    <div class="share-button" data-platform="pinterest">
+                        <div class="share-icon pinterest">p</div>
+                        <span class="share-button-label">Pinterest</span>
+                    </div>
+                    <div class="share-button" data-platform="whatsapp">
+                        <div class="share-icon whatsapp">w</div>
+                        <span class="share-button-label">WhatsApp</span>
+                    </div>
+                    <div class="share-button" data-platform="email">
+                        <div class="share-icon email">e</div>
+                        <span class="share-button-label">Email</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="share-link">
+                <h3 class="share-link-title">Or copy the link</h3>
+                <div class="share-link-input">
+                    <input type="text" id="shareUrl" value="{{ request.url }}" readonly>
+                    <button class="copy-button" id="copyButton">Copy</button>
+                </div>
+                <div class="copy-success" id="copySuccess">Link copied to clipboard!</div>
+            </div>
+        </div>
+        
+        <a href="{{ url_for('view_poster', poster_id=poster.id) }}" class="back-link">← Back to poster</a>
+    </div>
+    
+    <script>
+        // Get the current URL
+        const shareUrl = window.location.href;
+        const posterTitle = "{{ poster.title }}";
+        
+        // Add click handlers for share buttons
+        document.querySelectorAll('.share-button').forEach(button => {
+            button.addEventListener('click', function() {
+                const platform = this.getAttribute('data-platform');
+                
+                let shareUrl = '';
+                
+                switch(platform) {
+                    case 'facebook':
+                        shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`;
+                        break;
+                    case 'twitter':
+                        shareUrl = `https://twitter.com/intent/tweet?url=${encodeURIComponent(window.location.href)}&text=${encodeURIComponent(posterTitle)}`;
+                        break;
+                    case 'pinterest':
+                        shareUrl = `https://pinterest.com/pin/create/button/?url=${encodeURIComponent(window.location.href)}&media=${encodeURIComponent(window.location.href)}&description=${encodeURIComponent(posterTitle)}`;
+                        break;
+                    case 'whatsapp':
+                        shareUrl = `https://wa.me/?text=${encodeURIComponent(`Check out this movie poster: ${posterTitle} ${window.location.href}`)}`;
+                        break;
+                    case 'email':
+                        shareUrl = `mailto:?subject=${encodeURIComponent(posterTitle)}&body=${encodeURIComponent(`Check out this movie poster: ${window.location.href}`)}`;
+                        break;
+                }
+                
+                if (shareUrl) {
+                    window.open(shareUrl, '_blank', 'width=600,height=400');
+                }
+            });
+        });
+        
+        // Copy link functionality
+        const copyButton = document.getElementById('copyButton');
+        const copySuccess = document.getElementById('copySuccess');
+        
+        copyButton.addEventListener('click', function() {
+            const shareUrlInput = document.getElementById('shareUrl');
+            shareUrlInput.select();
+            document.execCommand('copy');
+            
+            copySuccess.style.display = 'block';
+            setTimeout(() => {
+                copySuccess.style.display = 'none';
+            }, 2000);
+        });
+    </script>
+</body>
+</html> 

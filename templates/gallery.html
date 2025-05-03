@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Poster Gallery</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        .gallery-container {
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .gallery-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        
+        .gallery-title {
+            font-size: 2rem;
+            color: var(--primary-color);
+        }
+        
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .gallery-item {
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .gallery-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        .gallery-item img {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+        }
+        
+        .gallery-item-content {
+            padding: 1.5rem;
+        }
+        
+        .gallery-item-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--primary-color);
+        }
+        
+        .gallery-item-meta {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .gallery-item-description {
+            color: #666;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            margin-bottom: 1rem;
+        }
+        
+        .gallery-item-actions {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .gallery-item-button {
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .view-button {
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+        }
+        
+        .share-button {
+            background-color: transparent;
+            color: var(--secondary-color);
+            border: 1px solid var(--secondary-color);
+        }
+        
+        .view-button:hover {
+            background-color: #2980b9;
+        }
+        
+        .share-button:hover {
+            background-color: rgba(52, 152, 219, 0.1);
+        }
+        
+        .empty-gallery {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: #666;
+        }
+        
+        .empty-gallery-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            color: #ccc;
+        }
+        
+        .empty-gallery-text {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .create-button {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            background-color: var(--secondary-color);
+            color: white;
+            border-radius: var(--border-radius);
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+        
+        .create-button:hover {
+            background-color: #2980b9;
+        }
+    </style>
+</head>
+<body>
+    <div class="gallery-container">
+        <div class="gallery-header">
+            <h1 class="gallery-title">Movie Poster Gallery</h1>
+            <a href="{{ url_for('index') }}" class="create-button">Create New Poster</a>
+        </div>
+        
+        {% if posters %}
+            <div class="gallery-grid">
+                {% for poster in posters %}
+                    <div class="gallery-item">
+                        <img src="{{ url_for('static', filename=poster.image_path) }}" alt="{{ poster.title }}">
+                        <div class="gallery-item-content">
+                            <h2 class="gallery-item-title">{{ poster.title }}</h2>
+                            <div class="gallery-item-meta">
+                                <span>Directed by {{ poster.director }}</span>
+                                <span>•</span>
+                                <span>{{ poster.genre|capitalize }}</span>
+                            </div>
+                            <p class="gallery-item-description">{{ poster.description }}</p>
+                            <div class="gallery-item-actions">
+                                <a href="{{ url_for('view_poster', poster_id=poster.id) }}" class="gallery-item-button view-button">View</a>
+                                <a href="{{ url_for('share_poster', poster_id=poster.id) }}" class="gallery-item-button share-button">Share</a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="empty-gallery">
+                <div class="empty-gallery-icon">🎬</div>
+                <p class="empty-gallery-text">No posters have been created yet.</p>
+                <a href="{{ url_for('index') }}" class="create-button">Create Your First Poster</a>
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html> 

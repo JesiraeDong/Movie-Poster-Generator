@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ poster.title }} - Movie Poster</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        .poster-view-container {
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .poster-view-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        
+        .poster-view-title {
+            font-size: 2rem;
+            color: var(--primary-color);
+        }
+        
+        .poster-view-actions {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .poster-view-button {
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .back-button {
+            background-color: transparent;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+        }
+        
+        .share-button {
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+        }
+        
+        .back-button:hover {
+            background-color: rgba(44, 62, 80, 0.1);
+        }
+        
+        .share-button:hover {
+            background-color: #2980b9;
+        }
+        
+        .poster-view-content {
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .poster-view-image {
+            flex: 1;
+            min-width: 300px;
+            max-width: 600px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            overflow: hidden;
+        }
+        
+        .poster-view-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        
+        .poster-view-details {
+            flex: 1;
+            min-width: 300px;
+            background: white;
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+        }
+        
+        .poster-view-meta {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .poster-view-section {
+            margin-bottom: 1.5rem;
+        }
+        
+        .poster-view-section-title {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary-color);
+        }
+        
+        .poster-view-section-content {
+            color: #666;
+            line-height: 1.8;
+        }
+        
+        .poster-view-date {
+            color: #999;
+            font-size: 0.9rem;
+        }
+        
+        .share-options {
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #eee;
+        }
+        
+        .share-options-title {
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+        
+        .share-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .share-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+        
+        .share-icon:hover {
+            transform: scale(1.1);
+        }
+        
+        .facebook {
+            background-color: #3b5998;
+        }
+        
+        .twitter {
+            background-color: #1da1f2;
+        }
+        
+        .pinterest {
+            background-color: #bd081c;
+        }
+        
+        .email {
+            background-color: #ea4335;
+        }
+    </style>
+</head>
+<body>
+    <div class="poster-view-container">
+        <div class="poster-view-header">
+            <h1 class="poster-view-title">{{ poster.title }}</h1>
+            <div class="poster-view-actions">
+                <a href="{{ url_for('gallery') }}" class="poster-view-button back-button">
+                    <span>←</span> Back to Gallery
+                </a>
+                <a href="{{ url_for('share_poster', poster_id=poster.id) }}" class="poster-view-button share-button">
+                    Share Poster
+                </a>
+            </div>
+        </div>
+        
+        <div class="poster-view-content">
+            <div class="poster-view-image">
+                <img src="{{ url_for('static', filename=poster.image_path) }}" alt="{{ poster.title }}">
+            </div>
+            
+            <div class="poster-view-details">
+                <div class="poster-view-meta">
+                    <span>Directed by {{ poster.director }}</span>
+                    <span>•</span>
+                    <span>{{ poster.genre|capitalize }}</span>
+                </div>
+                
+                <div class="poster-view-section">
+                    <h3 class="poster-view-section-title">Plot Summary</h3>
+                    <p class="poster-view-section-content">{{ poster.description }}</p>
+                </div>
+                
+                <div class="poster-view-section">
+                    <h3 class="poster-view-section-title">Detailed Synopsis</h3>
+                    <p class="poster-view-section-content">{{ poster.synopsis }}</p>
+                </div>
+                
+                <div class="poster-view-date">
+                    Created on {{ poster.created_at }}
+                </div>
+                
+                <div class="share-options">
+                    <h3 class="share-options-title">Share this poster</h3>
+                    <div class="share-buttons">
+                        <div class="share-icon facebook" title="Share on Facebook">f</div>
+                        <div class="share-icon twitter" title="Share on Twitter">t</div>
+                        <div class="share-icon pinterest" title="Pin on Pinterest">p</div>
+                        <div class="share-icon email" title="Share via Email">e</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Add click handlers for share buttons
+        document.querySelectorAll('.share-icon').forEach(icon => {
+            icon.addEventListener('click', function() {
+                const platform = this.classList[1];
+                const url = window.location.href;
+                const title = document.querySelector('.poster-view-title').textContent;
+                
+                let shareUrl = '';
+                
+                switch(platform) {
+                    case 'facebook':
+                        shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`;
+                        break;
+                    case 'twitter':
+                        shareUrl = `https://twitter.com/intent/tweet?url=${encodeURIComponent(url)}&text=${encodeURIComponent(title)}`;
+                        break;
+                    case 'pinterest':
+                        shareUrl = `https://pinterest.com/pin/create/button/?url=${encodeURIComponent(url)}&media=${encodeURIComponent(url)}&description=${encodeURIComponent(title)}`;
+                        break;
+                    case 'email':
+                        shareUrl = `mailto:?subject=${encodeURIComponent(title)}&body=${encodeURIComponent(`Check out this movie poster: ${url}`)}`;
+                        break;
+                }
+                
+                if (shareUrl) {
+                    window.open(shareUrl, '_blank', 'width=600,height=400');
+                }
+            });
+        });
+    </script>
+</body>
+</html> 
